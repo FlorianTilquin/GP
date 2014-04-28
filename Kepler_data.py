@@ -62,5 +62,8 @@ def reg(Kid,Beg,End):
     Y_reg = Y[l]
     T_reg = T_reg[l]
     C_reg = C_reg[l]
+    C_reg = np.reshape(C_reg, (len(C_reg) , 1 ))
+    Y_reg = np.reshape(Y_reg, (len(Y_reg) , 1 ))
+    T_reg = np.reshape(T_reg, (len(T_reg) , 1 ))
     return T_reg,Y_reg,C_reg
 

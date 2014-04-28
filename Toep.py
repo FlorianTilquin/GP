@@ -59,10 +59,12 @@ def PER(X1, X2, theta, white_noise = False):
     Periodic covariance function (PER)
     '''
     X1, X2 = np.array(X1), np.array(X2)
-    D2     = cdist(X1.T, X2.T,'euclidean') # calculate squared Euclidean distance
-    K      = theta[0]*np.exp((np.sin(-D2*np.pi/theta[1])**2)/(2*theta[2]**2)) #calculate covariance array
+    s  = np.shape(X1)
+    n  = s[0]
+    D2 = cdist(X1, X2,'euclidean') # calculate squared Euclidean distance
+    K  = theta[0]*np.exp((np.sin(-D2*np.pi/theta[1])**2)/(2*theta[2]**2)) #calculate covariance array
     if white_noise == True: # add white noise
-        K += (np.identity(X1[:,0].size) * (theta[3]**2))
+        K += (np.eye(n) * (theta[3]**2))
     K = np.array(K)
     return K
 #Matern kernel (Matern)
