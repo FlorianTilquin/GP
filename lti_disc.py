@@ -38,19 +38,21 @@
 #
 # $Id: lti_disc.m 111 2007-09-04 12:09:23Z ssarkka $
 #
-# This software is distributed under the GNU General Public 
-# Licence (version 2 or later) please refer to the file 
+# This software is distributed under the GNU General Public
+# Licence (version 2 or later) please refer to the file
 # Licence.txt, included with the software, for details.
 from numpy import *
 from scipy.linalg import expm
+from scipy.linalg import inv
 def lti_disc(F, L =[] , Q =[], dt = 1):
     if L == []:
         L = eye(shape(F)[0])
     if Q == []:
         Q = zeros(shape(F))
-       
+
     # Closed form integration of transition matrix
     A = expm(F*dt)
+
     # Closed form integration of covariance by matrix fraction decomposition
     QQ  = dot(L,dot(Q,L.T))
     n   = F.shape[0]
@@ -58,5 +60,5 @@ def lti_disc(F, L =[] , Q =[], dt = 1):
     h2 = hstack((zeros((n,n)),-F.T))
     Phi = vstack((h1,h2))
     AB  = dot(expm(Phi*dt),vstack((zeros((n,n)),eye(n))))
-    Q   = AB[:n,:]/AB[n:(2*n),:]
-    return A,Q 
+    Q   = dot(AB[:n,:],inv(AB[n:(2*n)+1,:]))
+    return A,Q
